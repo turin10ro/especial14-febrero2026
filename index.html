@@ -1,0 +1,1274 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nuestra Historia (M-M) - La Serie</title>
+    <link rel="icon" type="image/png" href="images/favicon.png">
+    <!-- Importamos fuentes elegantes de Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Montserrat:wght@300;400;600&display=swap" rel="stylesheet">
+    <!-- Iconos -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+
+    <style>
+        /* --- VARIABLES Y RESET --- */
+        :root {
+            --bg-color: #050714;
+            --accent-pink: #ec4899;
+            --accent-purple: #8b5cf6;
+            --text-color: #f3f4f6;
+            --card-bg: rgba(255, 255, 255, 0.05);
+            --glass-border: rgba(255, 255, 255, 0.1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Montserrat', sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            overflow-x: hidden;
+            line-height: 1.6;
+        }
+
+        /* --- FONDO ANIMADO --- */
+        #canvas-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            background: radial-gradient(ellipse at bottom, #1b2735 0%, #090a0f 100%);
+        }
+
+        /* --- TIPOGRAFÍA --- */
+        h1, h2, h3 {
+            font-family: 'Cinzel', serif;
+        }
+
+        .highlight {
+            color: var(--accent-pink);
+            text-shadow: 0 0 10px rgba(236, 72, 153, 0.5);
+        }
+
+        /* --- SECCIÓN HERO (INICIO) --- */
+        .hero {
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 20px;
+            position: relative;
+        }
+
+        .hero h1 {
+            font-size: 3.5rem;
+            margin-bottom: 10px;
+            opacity: 0;
+            animation: fadeInDown 1.5s ease forwards;
+        }
+
+        .hero p {
+            font-size: 1.2rem;
+            margin-bottom: 30px;
+            opacity: 0;
+            animation: fadeInUp 1.5s ease 0.5s forwards;
+            max-width: 600px;
+        }
+
+        .btn-start {
+            padding: 15px 40px;
+            font-size: 1.1rem;
+            background: linear-gradient(45deg, var(--accent-purple), var(--accent-pink));
+            color: white;
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            box-shadow: 0 0 20px rgba(139, 92, 246, 0.4);
+            text-decoration: none;
+            opacity: 0;
+            animation: zoomIn 1s ease 1s forwards;
+        }
+
+        .btn-start:hover {
+            transform: scale(1.05);
+            box-shadow: 0 0 30px rgba(236, 72, 153, 0.6);
+        }
+
+        /* --- CONTADOR --- */
+        .counter-section {
+            padding: 60px 20px;
+            text-align: center;
+            background: rgba(0,0,0,0.3);
+            backdrop-filter: blur(5px);
+        }
+
+        .timer-container {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            flex-wrap: wrap;
+            margin-top: 30px;
+        }
+
+        .time-box {
+            background: var(--card-bg);
+            border: 1px solid var(--glass-border);
+            padding: 20px;
+            border-radius: 15px;
+            min-width: 100px;
+            backdrop-filter: blur(10px);
+            animation: float 6s ease-in-out infinite;
+        }
+
+        .time-box span {
+            display: block;
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: var(--accent-pink);
+        }
+
+        .time-box p {
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        /* --- CATÁLOGO (TEMPORADAS) --- */
+        .catalog {
+            padding: 80px 20px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .section-title {
+            font-size: 2.5rem;
+            margin-bottom: 50px;
+            text-align: center;
+            position: relative;
+        }
+
+        .section-title::after {
+            content: '';
+            display: block;
+            width: 100px;
+            height: 3px;
+            background: var(--accent-pink);
+            margin: 10px auto 0;
+        }
+
+        .cards-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 30px;
+        }
+
+        .card {
+            background: var(--card-bg);
+            border-radius: 20px;
+            overflow: hidden;
+            border: 1px solid var(--glass-border);
+            transition: transform 0.4s ease, box-shadow 0.4s ease;
+            cursor: pointer;
+            position: relative;
+        }
+
+        .card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 30px rgba(0,0,0,0.5);
+            border-color: var(--accent-purple);
+        }
+
+        .card-img {
+            width: 100%;
+            height: 250px;
+            object-fit: cover;
+            transition: transform 0.5s ease;
+            display: block;
+        }
+
+        .card:hover .card-img {
+            transform: scale(1.1);
+        }
+
+        .card-content {
+            padding: 20px;
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            z-index: 1;
+            background: linear-gradient(to top, rgba(0,0,0,0.95) 0%, rgba(0,0,0,0.7) 70%, transparent 100%);
+        }
+
+        .card h3 {
+            font-size: 1.5rem;
+            margin-bottom: 5px;
+        }
+
+        .card span {
+            font-size: 0.9rem;
+            color: var(--accent-pink);
+            text-transform: uppercase;
+            font-weight: 600;
+        }
+
+        .play-icon {
+            position: absolute;
+            top: 40%;
+            left: 50%;
+            transform: translate(-50%, -50%) scale(0);
+            font-size: 3rem;
+            color: white;
+            opacity: 0;
+            transition: all 0.3s ease;
+            z-index: 2;
+            text-shadow: 0 0 10px black;
+        }
+
+        .card:hover .play-icon {
+            transform: translate(-50%, -50%) scale(1);
+            opacity: 1;
+        }
+
+        /* --- MODAL --- */
+        .modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.85);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s ease;
+            padding: 20px;
+            overflow-y: auto;
+        }
+
+        .modal.active {
+            opacity: 1;
+            pointer-events: all;
+        }
+
+        .modal-content {
+            background: #1a1a2e;
+            width: 100%;
+            max-width: 600px;
+            max-height: 90vh;
+            border-radius: 20px;
+            overflow: hidden;
+            overflow-y: auto;
+            position: relative;
+            transform: translateY(50px);
+            transition: transform 0.3s ease;
+            border: 1px solid var(--accent-purple);
+            margin: auto;
+        }
+
+        .modal.active .modal-content {
+            transform: translateY(0);
+        }
+
+        .modal-img {
+            width: 100%;
+            height: 300px;
+            object-fit: cover;
+            display: block;
+        }
+
+        .modal-body {
+            padding: 30px;
+            max-height: calc(90vh - 300px);
+            overflow-y: auto;
+        }
+
+        .close-btn {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            background: rgba(0,0,0,0.7);
+            color: white;
+            border: none;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 1.2rem;
+            transition: background 0.3s;
+            z-index: 10;
+        }
+
+        .close-btn:hover {
+            background: var(--accent-pink);
+        }
+
+        /* --- FINAL --- */
+        .final-section {
+            height: 80vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 20px;
+        }
+
+        .quote {
+            font-size: 2rem;
+            font-style: italic;
+            max-width: 800px;
+            margin-bottom: 40px;
+            line-height: 1.4;
+        }
+
+        .music-btn {
+            background: transparent;
+            border: 2px solid var(--accent-pink);
+            color: var(--accent-pink);
+            padding: 10px 20px;
+            border-radius: 50px;
+            cursor: pointer;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .music-btn:hover {
+            background: var(--accent-pink);
+            color: white;
+        }
+
+        /* --- ANIMACIONES --- */
+        @keyframes fadeInDown {
+            to { opacity: 1; transform: translateY(0); }
+            from { opacity: 0; transform: translateY(-20px); }
+        }
+
+        @keyframes fadeInUp {
+            to { opacity: 1; transform: translateY(0); }
+            from { opacity: 0; transform: translateY(20px); }
+        }
+
+        @keyframes zoomIn {
+            to { opacity: 1; transform: scale(1); }
+            from { opacity: 0; transform: scale(0.8); }
+        }
+
+        @keyframes float {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+            100% { transform: translateY(0px); }
+        }
+
+        /* --- ANIMACIÓN ESPECIAL 14 DE FEBRERO --- */
+        .special-intro {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+            animation: fadeOutIntro 1s ease 4s forwards;
+        }
+
+        .special-intro h2 {
+            font-size: 3rem;
+            color: white;
+            text-align: center;
+            margin-bottom: 20px;
+            animation: scaleIn 1s ease forwards;
+            text-shadow: 0 0 20px rgba(255, 255, 255, 0.5);
+        }
+
+        .special-intro p {
+            font-size: 1.5rem;
+            color: white;
+            text-align: center;
+            animation: fadeInUp 1s ease 1s forwards;
+            opacity: 0;
+            max-width: 600px;
+            padding: 0 20px;
+        }
+
+        .hearts-container {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            pointer-events: none;
+        }
+
+        .heart {
+            position: absolute;
+            font-size: 2rem;
+            animation: floatHeart 4s ease-in infinite;
+            opacity: 0;
+        }
+
+        @keyframes scaleIn {
+            0% { transform: scale(0); opacity: 0; }
+            50% { transform: scale(1.1); }
+            100% { transform: scale(1); opacity: 1; }
+        }
+
+        @keyframes fadeOutIntro {
+            to { opacity: 0; pointer-events: none; }
+        }
+
+        @keyframes floatHeart {
+            0% { 
+                transform: translateY(100vh) rotate(0deg);
+                opacity: 0;
+            }
+            10% { opacity: 1; }
+            90% { opacity: 1; }
+            100% { 
+                transform: translateY(-100px) rotate(360deg);
+                opacity: 0;
+            }
+        }
+
+        /* --- PÉTALOS DE ROSA CAYENDO --- */
+        .petals-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 100;
+            overflow: hidden;
+        }
+
+        .petal {
+            position: absolute;
+            top: -20px;
+            width: 10px;
+            height: 10px;
+            background: radial-gradient(ellipse at center, #ff69b4 0%, #ff1493 50%, #c71585 100%);
+            border-radius: 50% 0 50% 0;
+            opacity: 0.7;
+            animation: fall linear infinite;
+            transform-origin: center;
+        }
+
+        .petal::before {
+            content: '';
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(ellipse at center, #ff69b4 0%, #ff1493 50%, #c71585 100%);
+            border-radius: 0 50% 0 50%;
+            transform: rotate(90deg);
+        }
+
+        @keyframes fall {
+            0% {
+                transform: translateY(-20px) rotate(0deg) translateX(0);
+                opacity: 0.7;
+            }
+            10% {
+                opacity: 0.9;
+            }
+            100% {
+                transform: translateY(100vh) rotate(720deg) translateX(100px);
+                opacity: 0;
+            }
+        }
+
+        /* --- BOTÓN DE SORPRESA FLOTANTE --- */
+        .surprise-btn {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            border: none;
+            color: white;
+            font-size: 1.5rem;
+            cursor: pointer;
+            box-shadow: 0 4px 15px rgba(245, 87, 108, 0.4);
+            z-index: 1000;
+            transition: all 0.3s ease;
+            animation: pulse 2s infinite;
+        }
+
+        .surprise-btn:hover {
+            transform: scale(1.1) rotate(15deg);
+            box-shadow: 0 6px 20px rgba(245, 87, 108, 0.6);
+        }
+
+        .surprise-btn:active {
+            transform: scale(0.95);
+        }
+
+        @keyframes pulse {
+            0%, 100% {
+                transform: scale(1);
+            }
+            50% {
+                transform: scale(1.05);
+            }
+        }
+
+        /* --- CANVAS DE CONFETI --- */
+        #confettiCanvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 9998;
+        }
+
+        /* --- EFECTO DE ONDAS AL HACER CLIC --- */
+        .ripple {
+            position: fixed;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(236, 72, 153, 0.6) 0%, rgba(139, 92, 246, 0.3) 50%, transparent 100%);
+            pointer-events: none;
+            animation: rippleEffect 0.8s ease-out;
+            z-index: 9999;
+        }
+
+        @keyframes rippleEffect {
+            0% {
+                width: 0;
+                height: 0;
+                opacity: 1;
+            }
+            100% {
+                width: 300px;
+                height: 300px;
+                opacity: 0;
+            }
+        }
+
+        /* --- EFECTO DE BRILLO EN TARJETAS (HOVER) --- */
+        .card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+            transition: left 0.5s;
+            z-index: 1;
+        }
+
+        .card:hover::before {
+            left: 100%;
+        }
+
+        .card::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle at var(--mouse-x, 50%) var(--mouse-y, 50%), rgba(236, 72, 153, 0.2) 0%, transparent 50%);
+            opacity: 0;
+            transition: opacity 0.3s;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .card:hover::after {
+            opacity: 1;
+        }
+
+        /* --- RESPONSIVE --- */
+        @media (max-width: 768px) {
+            .hero h1 { font-size: 2.5rem; }
+            .section-title { font-size: 2rem; }
+            .quote { font-size: 1.5rem; }
+            .time-box { min-width: 70px; padding: 10px; }
+            .time-box span { font-size: 1.5rem; }
+            
+            /* Modal responsive */
+            .modal {
+                padding: 10px;
+                align-items: flex-start;
+                padding-top: 20px;
+            }
+            
+            .modal-content {
+                max-height: 85vh;
+                border-radius: 15px;
+            }
+            
+            .modal-img {
+                height: 200px;
+            }
+            
+            .modal-body {
+                padding: 20px;
+                max-height: calc(85vh - 200px);
+            }
+            
+            .close-btn {
+                width: 35px;
+                height: 35px;
+                font-size: 1rem;
+                top: 10px;
+                right: 10px;
+            }
+            
+            /* Botón de sorpresa en móvil */
+            .surprise-btn {
+                width: 50px;
+                height: 50px;
+                bottom: 20px;
+                right: 20px;
+                font-size: 1.2rem;
+            }
+            
+            /* Animación especial en móvil */
+            .special-intro h2 {
+                font-size: 2rem;
+                padding: 0 20px;
+            }
+            
+            .special-intro p {
+                font-size: 1.1rem;
+            }
+            
+            /* Hero responsive */
+            .hero p {
+                font-size: 1rem;
+                padding: 0 10px;
+            }
+            
+            .btn-start {
+                padding: 12px 30px;
+                font-size: 0.9rem;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .hero h1 { font-size: 2rem; }
+            .hero h2 { font-size: 1.5rem; }
+            .section-title { font-size: 1.7rem; }
+            
+            .modal-img {
+                height: 180px;
+            }
+            
+            .modal-body {
+                padding: 15px;
+                max-height: calc(85vh - 180px);
+            }
+            
+            .modal-body h3 {
+                font-size: 1.4rem;
+            }
+            
+            .modal-body p {
+                font-size: 0.95rem;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Animación Especial 14 de Febrero -->
+    <div class="special-intro" id="specialIntro">
+        <div class="hearts-container" id="heartsContainer"></div>
+        <h2>💝 Especial 14 de Febrero 💝</h2>
+        <p>Un regalo hecho con amor para ti, Valeria Michelle</p>
+    </div>
+
+    <!-- Pétalos de Rosa Cayendo -->
+    <div class="petals-container" id="petalsContainer"></div>
+
+    <!-- Botón de Sorpresa Flotante -->
+    <button class="surprise-btn" id="surpriseBtn" title="¡Haz clic para una sorpresa!">
+        <i class="fas fa-gift"></i>
+    </button>
+
+    <!-- Contenedor de Confeti -->
+    <canvas id="confettiCanvas"></canvas>
+
+    <!-- Canvas para el fondo de estrellas -->
+    <div id="canvas-container">
+        <canvas id="starsCanvas"></canvas>
+    </div>
+
+    <!-- Pantalla de Inicio -->
+    <section class="hero">
+        <h1>Nuestra <span class="highlight">Historia</span></h1>
+        <h2><span class="highlight">Michelle y</span> Arturo</h2>
+        <p>Una serie original basada en hechos reales, que comenzó el día que nos conocimos y no tiene final.</p>
+        <p style="font-size: 0.95rem; margin-top: 20px; opacity: 0.9; font-style: italic;">
+            Este sitio está dedicado a Michelle, el amor de mi vida. 
+            Quiero compartir con el mundo un pedacito de nuestra historia, 
+            porque el amor verdadero merece ser celebrado. 
+        </p>
+        <a href="#temporadas" class="btn-start"><i class="fas fa-play"></i> Ver Temporadas</a>
+    </section>
+
+    <!-- Contador de Tiempo -->
+    <section class="counter-section">
+        <h3>Tiempo que llevamos escribiendo este guion</h3>
+        <div class="timer-container">
+            <div class="time-box">
+                <span id="days">00</span>
+                <p>Días</p>
+            </div>
+            <div class="time-box">
+                <span id="hours">00</span>
+                <p>Horas</p>
+            </div>
+            <div class="time-box">
+                <span id="minutes">00</span>
+                <p>Minutos</p>
+            </div>
+            <div class="time-box">
+                <span id="seconds">00</span>
+                <p>Segundos</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Catálogo de Temporadas -->
+    <section id="temporadas" class="catalog">
+        <h2 class="section-title">Episodios Destacados</h2>
+        
+        <div class="cards-grid">
+            <!-- Temporada 1 -->
+            <div class="card" onclick="openModal('t1')">
+                <i class="fas fa-play-circle play-icon"></i>
+                <img src="images/foto3.jpeg" alt="Conocernos" class="card-img">
+                <div class="card-content">
+                    <span>Temporada 1</span>
+                    <h3>El Encuentro</h3>
+                </div>
+            </div>
+
+            <!-- Temporada 2 -->
+            <div class="card" onclick="openModal('t2')">
+                <i class="fas fa-play-circle play-icon"></i>
+                <img src="images/foto7.jpeg" alt="Primera Cita" class="card-img">
+                <div class="card-content">
+                    <span>Temporada 2</span>
+                    <h3>La Primera Cita</h3>
+                </div>
+            </div>
+
+            <!-- Temporada 3 -->
+            <div class="card" onclick="openModal('t3')">
+                <i class="fas fa-play-circle play-icon"></i>
+                <img src="images/foto19.jpeg" alt="Momentos" class="card-img">
+                <div class="card-content">
+                    <span>Temporada 3</span>
+                    <h3>El "Sí"</h3>
+                </div>
+            </div>
+
+            <!-- Temporada 4 -->
+            <div class="card" onclick="openModal('t4')">
+                <i class="fas fa-play-circle play-icon"></i>
+                <img src="images/foto27.jpeg" alt="Aventuras" class="card-img">
+                <div class="card-content">
+                    <span>Temporada 4</span>
+                    <h3>Nuestras Aventuras</h3>
+                </div>
+            </div>
+
+            <!-- Temporada 5 -->
+            <div class="card" onclick="openModal('t5')">
+                <i class="fas fa-play-circle play-icon"></i>
+                <img src="images/foto52.jpeg" alt="Risas" class="card-img">
+                <div class="card-content">
+                    <span>Temporada 5</span>
+                    <h3>Momentos de Risa</h3>
+                </div>
+            </div>
+
+            <!-- Temporada 6 -->
+            <div class="card" onclick="openModal('t6')">
+                <i class="fas fa-play-circle play-icon"></i>
+                <img src="images/foto54.jpeg" alt="Apoyo" class="card-img">
+                <div class="card-content">
+                    <span>Temporada 6</span>
+                    <h3>En las Buenas y Malas</h3>
+                </div>
+            </div>
+
+            <!-- Temporada 7 -->
+            <div class="card" onclick="openModal('t7')">
+                <i class="fas fa-play-circle play-icon"></i>
+                <img src="images/foto81.jpeg" alt="Sueños" class="card-img">
+                <div class="card-content">
+                    <span>Temporada 7</span>
+                    <h3>Nuestros Sueños</h3>
+                </div>
+            </div>
+
+            <!-- Temporada 8 -->
+            <div class="card" onclick="openModal('t8')">
+                <i class="fas fa-play-circle play-icon"></i>
+                <img src="images/foto181.jpeg" alt="Detalles" class="card-img">
+                <div class="card-content">
+                    <span>Temporada 8</span>
+                    <h3>Los Pequeños Detalles</h3>
+                </div>
+            </div>
+
+            <!-- Temporada 9 -->
+            <div class="card" onclick="openModal('t9')">
+                <i class="fas fa-play-circle play-icon"></i>
+                <img src="images/foto155.jpeg" alt="Complicidad" class="card-img">
+                <div class="card-content">
+                    <span>Temporada 9</span>
+                    <h3>Nuestra Complicidad</h3>
+                </div>
+            </div>
+
+            <!-- Próximamente -->
+            <div class="card" onclick="openModal('future')">
+                <i class="fas fa-play-circle play-icon"></i>
+                <img src="images/foto114.jpeg" alt="Futuro" class="card-img">
+                <div class="card-content">
+                    <span>Próximamente</span>
+                    <h3>Toda una vida</h3>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Sección Final -->
+    <section class="final-section">
+        <div class="quote" id="finalQuote">
+            En todos los universos posibles, siempre te elegiría a ti, Valeria mi amor eterno, te amo con todo mi ser con cada pedacito de mí, y jamás me cansaré de desmostrártelo mi princesa hermosa.
+        </div>
+        
+        <!-- Botón Secreto de Audio -->
+        <button id="musicBtn" class="music-btn">
+            <i class="fas fa-music"></i> Nuestra Canción
+        </button>
+        <!-- Elemento de audio oculto -->
+        <audio id="bgMusic" loop>
+            <source src="audio/carduemenes.mp3" type="audio/mpeg">
+            Tu navegador no soporta el audio.
+        </audio>
+    </section>
+
+    <!-- Modal Dinámico -->
+    <div class="modal" id="infoModal">
+        <div class="modal-content">
+            <button class="close-btn" onclick="closeModal()">&times;</button>
+            <img src="" alt="Detalle" class="modal-img" id="mImg">
+            <div class="modal-body">
+                <h3 id="mTitle" class="highlight" style="font-size: 1.8rem; margin-bottom: 10px;">Título</h3>
+                <span id="mDate" style="color: #ccc; font-size: 0.9rem; display:block; margin-bottom: 15px;">Fecha</span>
+                <p id="mDesc">Descripción del momento.</p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        /* --- ANIMACIÓN DE CORAZONES FLOTANTES --- */
+        const heartsContainer = document.getElementById('heartsContainer');
+        const heartSymbols = ['💕', '💖', '💗', '💓', '💝', '❤️', '💘'];
+        
+        function createHeart() {
+            const heart = document.createElement('div');
+            heart.className = 'heart';
+            heart.innerText = heartSymbols[Math.floor(Math.random() * heartSymbols.length)];
+            heart.style.left = Math.random() * 100 + '%';
+            heart.style.animationDelay = Math.random() * 2 + 's';
+            heart.style.animationDuration = (Math.random() * 3 + 3) + 's';
+            heartsContainer.appendChild(heart);
+            
+            setTimeout(() => heart.remove(), 7000);
+        }
+
+        // Crear corazones durante los primeros 4 segundos
+        const heartInterval = setInterval(createHeart, 300);
+        setTimeout(() => clearInterval(heartInterval), 4000);
+
+        // Remover la intro después de 5 segundos
+        setTimeout(() => {
+            document.getElementById('specialIntro').remove();
+        }, 5000);
+
+        /* --- PÉTALOS DE ROSA CAYENDO --- */
+        const petalsContainer = document.getElementById('petalsContainer');
+        
+        function createPetal() {
+            const petal = document.createElement('div');
+            petal.className = 'petal';
+            
+            // Posición aleatoria horizontal
+            petal.style.left = Math.random() * 100 + '%';
+            
+            // Tamaño aleatorio
+            const size = Math.random() * 8 + 6;
+            petal.style.width = size + 'px';
+            petal.style.height = size + 'px';
+            
+            // Duración de caída aleatoria
+            const duration = Math.random() * 5 + 8;
+            petal.style.animationDuration = duration + 's';
+            
+            // Delay aleatorio
+            petal.style.animationDelay = Math.random() * 2 + 's';
+            
+            petalsContainer.appendChild(petal);
+            
+            // Remover el pétalo después de que termine la animación
+            setTimeout(() => petal.remove(), (duration + 2) * 1000);
+        }
+
+        // Crear pétalos continuamente
+        setInterval(createPetal, 300);
+        
+        // Crear algunos pétalos iniciales
+        for(let i = 0; i < 15; i++) {
+            setTimeout(createPetal, i * 200);
+        }
+
+        /* --- EFECTO DE ONDAS AL HACER CLIC --- */
+        document.addEventListener('click', (e) => {
+            const ripple = document.createElement('div');
+            ripple.className = 'ripple';
+            ripple.style.left = (e.clientX - 150) + 'px';
+            ripple.style.top = (e.clientY - 150) + 'px';
+            document.body.appendChild(ripple);
+            
+            setTimeout(() => ripple.remove(), 800);
+        });
+
+        /* --- EFECTO DE BRILLO QUE SIGUE EL CURSOR EN TARJETAS --- */
+        document.querySelectorAll('.card').forEach(card => {
+            card.addEventListener('mousemove', (e) => {
+                const rect = card.getBoundingClientRect();
+                const x = ((e.clientX - rect.left) / rect.width) * 100;
+                const y = ((e.clientY - rect.top) / rect.height) * 100;
+                card.style.setProperty('--mouse-x', x + '%');
+                card.style.setProperty('--mouse-y', y + '%');
+            });
+        });
+
+        /* --- BOTÓN DE SORPRESA CON CONFETI --- */
+        const surpriseBtn = document.getElementById('surpriseBtn');
+        const confettiCanvas = document.getElementById('confettiCanvas');
+        const confettiCtx = confettiCanvas.getContext('2d');
+        
+        confettiCanvas.width = window.innerWidth;
+        confettiCanvas.height = window.innerHeight;
+        
+        window.addEventListener('resize', () => {
+            confettiCanvas.width = window.innerWidth;
+            confettiCanvas.height = window.innerHeight;
+        });
+
+        class Confetti {
+            constructor() {
+                this.x = Math.random() * confettiCanvas.width;
+                this.y = -20;
+                this.size = Math.random() * 8 + 4;
+                this.speedY = Math.random() * 3 + 2;
+                this.speedX = Math.random() * 2 - 1;
+                this.color = ['#ff6b9d', '#c44569', '#f8b500', '#feca57', '#ff6348', '#ee5a6f', '#a29bfe'][Math.floor(Math.random() * 7)];
+                this.rotation = Math.random() * 360;
+                this.rotationSpeed = Math.random() * 10 - 5;
+            }
+
+            update() {
+                this.y += this.speedY;
+                this.x += this.speedX;
+                this.rotation += this.rotationSpeed;
+                this.speedY += 0.1; // Gravedad
+            }
+
+            draw() {
+                confettiCtx.save();
+                confettiCtx.translate(this.x, this.y);
+                confettiCtx.rotate(this.rotation * Math.PI / 180);
+                confettiCtx.fillStyle = this.color;
+                confettiCtx.fillRect(-this.size / 2, -this.size / 2, this.size, this.size);
+                confettiCtx.restore();
+            }
+        }
+
+        let confettiArray = [];
+        let animatingConfetti = false;
+
+        function animateConfetti() {
+            confettiCtx.clearRect(0, 0, confettiCanvas.width, confettiCanvas.height);
+            
+            confettiArray.forEach((confetti, index) => {
+                confetti.update();
+                confetti.draw();
+                
+                if (confetti.y > confettiCanvas.height) {
+                    confettiArray.splice(index, 1);
+                }
+            });
+
+            if (confettiArray.length > 0) {
+                requestAnimationFrame(animateConfetti);
+            } else {
+                animatingConfetti = false;
+            }
+        }
+
+        surpriseBtn.addEventListener('click', (e) => {
+            e.stopPropagation(); // Evitar el efecto de onda en el botón
+            
+            // Crear confeti
+            for (let i = 0; i < 150; i++) {
+                confettiArray.push(new Confetti());
+            }
+            
+            if (!animatingConfetti) {
+                animatingConfetti = true;
+                animateConfetti();
+            }
+
+            // Animación del botón
+            surpriseBtn.style.transform = 'scale(0.9) rotate(360deg)';
+            setTimeout(() => {
+                surpriseBtn.style.transform = 'scale(1) rotate(0deg)';
+            }, 300);
+        });
+
+        /* --- CONFIGURACIÓN DE LA PAREJA (EDITAR AQUÍ) --- */
+        
+        // 1. FECHA DE INICIO DE LA RELACIÓN
+        // Fecha exacta: 19 de Abril 2025 a las 11:06 PM
+        const fechaInicio = new Date("2025-04-19T23:06:00");
+
+        // 2. DATOS DE LAS TEMPORADAS
+        const seasonsData = {
+            't1': {
+                title: "Cómo nos conocimos",
+                date: "Capítulo 1",
+                desc: "Todo comenzó de la manera más inesperada. Aún recuerdo el primer momento en que vi tu sonrisa y un mensaje que no esperaba, supe que algo cambiaría en mi vida para siempre.",
+                img: "images/foto3.jpeg"
+            },
+            't2': {
+                title: "Nuestra Primera Cita",
+                date: "Capítulo 2",
+                desc: "Los nervios, las risas tímidas y esa sensación de no querer que el día terminara nunca. Fue parte del comienzo de nuestra aventura juntos.",
+                img: "images/foto7.jpeg"
+            },
+            't3': {
+                title: "El día que supe que eras tú",
+                date: "Clímax de temporada",
+                desc: "Después de tanto conocernos y descubrirnos, en solo un momento de paz absoluta a tu lado donde entendí que mi hogar no era un lugar, sino una persona: tú. Me atreví a confesarte mi amor, emocionado y nervioso a la vez, anosioso te pregunté y así tu linda respuesta llegó.",
+                img: "images/foto19.jpeg"
+            },
+            't4': {
+                title: "Nuestras Aventuras Juntos",
+                date: "Capítulo 4",
+                desc: "Cada salida, cada viaje, cada lugar nuevo que exploramos juntos. Desde paseos simples hasta aventuras épicas, mi amor me encanta cada date sin importar qué sea, ni el tiempo que sea, siempre es mejor cuando estás a mi lado.",
+                img: "images/foto27.jpeg"
+            },
+            't5': {
+                title: "Esos Momentos de Risa",
+                date: "Capítulo 5",
+                desc: "Las bromas internas, las risas sin control, esos momentos donde no podemos parar de reír. Tu risa es mi sonido favorito amor de mi vida, aún recuerdo esas veces que casi me caigo caminando, las veces en que me asustas, o cuando te asusto viendo videos de terror mi amor y terminamos mueriendo de risa ambos. Porque solo nosotros nos entendemos mi bien.",
+                img: "images/foto52.jpeg"
+            },
+            't6': {
+                title: "En las Buenas y en las Malas",
+                date: "Capítulo 6",
+                desc: "Los días difíciles donde estuviste ahí para mí, y yo para ti. Aprendimos que juntos podemos con todo, que somos más fuertes cuando nos apoyamos.",
+                img: "images/foto54.jpeg"
+            },
+            't7': {
+                title: "Construyendo Nuestros Sueños",
+                date: "Capítulo 7",
+                desc: "Esas conversaciones sobre el futuro, los planes que hacemos, los sueños que compartimos. Cada meta es más emocionante porque sé que la alcanzaremos juntos. Cariño nos seguiremos viendo crecer tanto, apoyándonos y amándonos en cada latido de nuestro coraaón.",
+                img: "images/foto81.jpeg"
+            },
+            't8': {
+                title: "Los Pequeños Detalles",
+                date: "Capítulo 8",
+                desc: "Las notas sorpresa, los mensajes de buenos días, los detalles mi vida. Son los pequeños gestos los que hacen grande nuestro amor, y eso vuelve nuestro amor tan único.",
+                img: "images/foto181.jpeg"
+            },
+            't9': {
+                title: "Nuestra Complicidad Única",
+                date: "Capítulo 9",
+                desc: "Esa conexión especial que tenemos, donde nos entendemos con solo mirarnos. Somos el mejor equipo, los mejores cómplices en esta aventura llamada vida.",
+                img: "images/foto155.jpeg"
+            },
+            'future': {
+                title: "Spoilers del Futuro",
+                date: "Próximas Temporadas",
+                desc: "Viajes, sueños cumplidos, tardes de domingo y envejecer juntos. Lo mejor de nuestra serie aún está por escribirse.",
+                img: "images/foto114.jpeg"
+            }
+        };
+
+        /* --- LÓGICA DEL CONTADOR --- */
+        function updateTimer() {
+            const ahora = new Date();
+            const diferencia = ahora - fechaInicio;
+
+            const dias = Math.floor(diferencia / (1000 * 60 * 60 * 24));
+            const horas = Math.floor((diferencia / (1000 * 60 * 60)) % 24);
+            const minutos = Math.floor((diferencia / (1000 * 60)) % 60);
+            const segundos = Math.floor((diferencia / 1000) % 60);
+
+            document.getElementById('days').innerText = dias < 10 ? '0' + dias : dias;
+            document.getElementById('hours').innerText = horas < 10 ? '0' + horas : horas;
+            document.getElementById('minutes').innerText = minutos < 10 ? '0' + minutos : minutos;
+            document.getElementById('seconds').innerText = segundos < 10 ? '0' + segundos : segundos;
+        }
+        setInterval(updateTimer, 1000);
+        updateTimer();
+
+        /* --- LÓGICA DE MODALES --- */
+        const modal = document.getElementById('infoModal');
+        const mTitle = document.getElementById('mTitle');
+        const mDate = document.getElementById('mDate');
+        const mDesc = document.getElementById('mDesc');
+        const mImg = document.getElementById('mImg');
+
+        function openModal(seasonKey) {
+            const data = seasonsData[seasonKey];
+            if(data) {
+                mTitle.innerText = data.title;
+                mDate.innerText = data.date;
+                mDesc.innerText = data.desc;
+                mImg.src = data.img;
+                modal.classList.add('active');
+            }
+        }
+
+        function closeModal() {
+            modal.classList.remove('active');
+        }
+
+        // Cerrar modal al hacer clic fuera del contenido
+        modal.addEventListener('click', (e) => {
+            if (e.target === modal) closeModal();
+        });
+
+        /* --- CONTROL DE AUDIO --- */
+        const musicBtn = document.getElementById('musicBtn');
+        const audio = document.getElementById('bgMusic');
+        let isPlaying = false;
+
+        musicBtn.addEventListener('click', () => {
+            if (isPlaying) {
+                audio.pause();
+                musicBtn.innerHTML = '<i class="fas fa-music"></i> Nuestra Canción';
+            } else {
+                audio.play();
+                musicBtn.innerHTML = '<i class="fas fa-pause"></i> Pausar';
+            }
+            isPlaying = !isPlaying;
+        });
+
+        /* --- FONDO DE ESTRELLAS (CANVAS) --- */
+        const canvas = document.getElementById('starsCanvas');
+        const ctx = canvas.getContext('2d');
+        let width, height;
+
+        function resize() {
+            width = window.innerWidth;
+            height = window.innerHeight;
+            canvas.width = width;
+            canvas.height = height;
+        }
+        window.addEventListener('resize', resize);
+        resize();
+
+        const stars = [];
+        const numStars = 100;
+
+        class Star {
+            constructor() {
+                this.reset();
+            }
+            reset() {
+                this.x = Math.random() * width;
+                this.y = Math.random() * height;
+                this.size = Math.random() * 2;
+                this.speed = Math.random() * 0.5 + 0.1;
+                this.opacity = Math.random();
+                this.fade = Math.random() * 0.02 + 0.005;
+            }
+            update() {
+                this.y -= this.speed;
+                if (this.y < 0) this.y = height;
+                
+                // Efecto parpadeo
+                this.opacity += this.fade;
+                if(this.opacity > 1 || this.opacity < 0) this.fade = -this.fade;
+            }
+            draw() {
+                ctx.fillStyle = `rgba(255, 255, 255, ${Math.abs(this.opacity)})`;
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                ctx.fill();
+            }
+        }
+
+        for(let i=0; i<numStars; i++) {
+            stars.push(new Star());
+        }
+
+        function animate() {
+            ctx.clearRect(0, 0, width, height);
+            stars.forEach(star => {
+                star.update();
+                star.draw();
+            });
+            requestAnimationFrame(animate);
+        }
+        animate();
+
+        /* --- SCROLL FADE IN --- */
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.opacity = 1;
+                    entry.target.style.transform = 'translateY(0)';
+                }
+            });
+        });
+
+        document.querySelectorAll('.card, .section-title').forEach(el => {
+            el.style.opacity = 0;
+            el.style.transform = 'translateY(20px)';
+            el.style.transition = 'opacity 0.6s ease-out, transform 0.6s ease-out';
+            observer.observe(el);
+        });
+
+    </script>
+</body>
+</html>
