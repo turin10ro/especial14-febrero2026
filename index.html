@@ -319,21 +319,31 @@
 
         /* --- FINAL --- */
         .final-section {
-            height: 80vh;
+            min-height: 80vh;
             display: flex;
             flex-direction: column;
             justify-content: center;
             align-items: center;
             text-align: center;
-            padding: 20px;
+            padding: 40px 20px;
+            width: 100%;
+            box-sizing: border-box;
         }
 
         .quote {
-            font-size: 2rem;
+            font-size: 1.5rem;
             font-style: italic;
-            max-width: 800px;
-            margin-bottom: 40px;
-            line-height: 1.4;
+            max-width: 95%;
+            margin: 0 auto 40px auto;
+            line-height: 1.7;
+            padding: 0 15px;
+            word-wrap: break-word;
+            overflow-wrap: break-word;
+            word-break: break-word;
+            hyphens: auto;
+            box-sizing: border-box;
+            text-align: center;
+            display: block;
         }
 
         .music-btn {
@@ -604,11 +614,112 @@
             opacity: 1;
         }
 
+        /* --- SECCIÓN LO QUE AMO DE TI --- */
+        .love-categories {
+            max-width: 800px;
+            margin: 0 auto;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .love-item {
+            background: var(--card-bg);
+            border: 1px solid var(--glass-border);
+            border-radius: 15px;
+            overflow: hidden;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(10px);
+        }
+
+        .love-item:hover {
+            border-color: var(--accent-pink);
+            transform: translateX(5px);
+        }
+
+        .love-header {
+            padding: 20px 25px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            user-select: none;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .love-header h3 {
+            font-size: 1.3rem;
+            margin: 0;
+            color: var(--text-color);
+            flex: 1;
+            min-width: 200px;
+            word-wrap: break-word;
+            overflow-wrap: break-word;
+        }
+
+        .love-header i {
+            color: var(--accent-pink);
+            transition: transform 0.3s ease;
+            font-size: 1.2rem;
+            flex-shrink: 0;
+        }
+
+        .love-item.active .love-header i {
+            transform: rotate(180deg);
+        }
+
+        .love-content {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.5s ease;
+            padding: 0 25px;
+        }
+
+        .love-item.active .love-content {
+            max-height: 500px;
+        }
+
+        .love-content p {
+            margin: 0;
+            line-height: 1.8;
+            color: rgba(255, 255, 255, 0.9);
+            font-size: 1rem;
+            word-wrap: break-word;
+            overflow-wrap: break-word;
+            white-space: normal;
+            padding: 20px 0;
+        }
+
         /* --- RESPONSIVE --- */
+        @media (min-width: 1200px) {
+            .quote {
+                font-size: 1.6rem;
+                max-width: 800px;
+                line-height: 1.8;
+                padding: 0 30px;
+            }
+        }
+
+        @media (min-width: 769px) and (max-width: 1199px) {
+            .quote {
+                font-size: 1.4rem;
+                max-width: 90%;
+                line-height: 1.7;
+                padding: 0 25px;
+            }
+        }
+
         @media (max-width: 768px) {
             .hero h1 { font-size: 2.5rem; }
             .section-title { font-size: 2rem; }
-            .quote { font-size: 1.5rem; }
+            .quote { 
+                font-size: 1.1rem;
+                line-height: 1.75;
+                padding: 0 20px;
+                margin-bottom: 30px;
+                max-width: 95%;
+            }
             .time-box { min-width: 70px; padding: 10px; }
             .time-box span { font-size: 1.5rem; }
             
@@ -617,6 +728,78 @@
                 padding: 10px;
                 align-items: flex-start;
                 padding-top: 20px;
+            }
+
+            /* Ajustes para "Lo que Amo de Ti" en móvil */
+            .love-header h3 {
+                font-size: 0.95rem;
+                line-height: 1.5;
+                word-wrap: break-word;
+            }
+
+            .love-header {
+                padding: 12px 15px;
+            }
+
+            .love-content p {
+                font-size: 0.85rem;
+                line-height: 1.8;
+                padding: 15px 0;
+            }
+        }
+
+        /* --- FIRMA --- */
+        .signature {
+            margin-top: 150px;
+            padding: 40px 20px;
+            text-align: center;
+            opacity: 0.85;
+            transition: all 0.4s ease;
+            position: relative;
+        }
+
+        .signature::before {
+            content: '';
+            display: block;
+            width: 60px;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, var(--accent-pink), transparent);
+            margin: 0 auto 30px;
+            opacity: 0.6;
+        }
+
+        .signature:hover {
+            opacity: 1;
+        }
+
+        .signature p {
+            margin: 12px 0;
+            font-size: 1.1rem;
+            font-family: 'Cinzel', serif;
+            font-weight: 400;
+            letter-spacing: 2px;
+            color: rgba(255, 255, 255, 0.95);
+        }
+
+        .signature p:first-of-type {
+            font-size: 1.2rem;
+        }
+
+        .signature-date {
+            font-size: 0.9rem !important;
+            color: var(--accent-pink) !important;
+            font-weight: 300 !important;
+            margin-top: 15px !important;
+            letter-spacing: 1.5px !important;
+            font-family: 'Montserrat', sans-serif !important;
+        }
+
+        /* --- MEDIA QUERIES ADICIONALES --- */
+        @media (max-width: 768px) {
+            .quote {
+                font-size: 1.3rem;
+                line-height: 1.6;
+                padding: 0 25px;
             }
             
             .modal-content {
@@ -641,7 +824,6 @@
                 right: 10px;
             }
             
-            /* Botón de sorpresa en móvil */
             .surprise-btn {
                 width: 50px;
                 height: 50px;
@@ -650,7 +832,6 @@
                 font-size: 1.2rem;
             }
             
-            /* Animación especial en móvil */
             .special-intro h2 {
                 font-size: 2rem;
                 padding: 0 20px;
@@ -660,7 +841,6 @@
                 font-size: 1.1rem;
             }
             
-            /* Hero responsive */
             .hero p {
                 font-size: 1rem;
                 padding: 0 10px;
@@ -671,11 +851,19 @@
                 font-size: 0.9rem;
             }
         }
-        
+
         @media (max-width: 480px) {
             .hero h1 { font-size: 2rem; }
             .hero h2 { font-size: 1.5rem; }
             .section-title { font-size: 1.7rem; }
+            
+            .quote {
+                font-size: 0.95rem;
+                line-height: 1.8;
+                padding: 0 15px;
+                margin-bottom: 25px;
+                max-width: 95%;
+            }
             
             .modal-img {
                 height: 180px;
@@ -692,6 +880,23 @@
             
             .modal-body p {
                 font-size: 0.95rem;
+            }
+
+            /* Ajustes adicionales para "Lo que Amo de Ti" */
+            .love-header h3 {
+                font-size: 0.88rem;
+            }
+
+            .love-content p {
+                font-size: 0.8rem;
+                line-height: 1.75;
+            }
+        }
+
+        @media (max-width: 375px) {
+            .quote {
+                font-size: 0.85rem;
+                padding: 0 12px;
             }
         }
     </style>
@@ -755,6 +960,9 @@
                 <p>Segundos</p>
             </div>
         </div>
+        <p style="margin-top: 30px; font-size: 1.1rem; font-style: italic; max-width: 700px; margin-left: auto; margin-right: auto; line-height: 1.6;">
+            Y cada segundo a tu lado vale y ha valido la pena, <span class="highlight">bien de mi vida</span> 💗
+        </p>
     </section>
 
     <!-- Catálogo de Temporadas -->
@@ -864,10 +1072,83 @@
         </div>
     </section>
 
+    <!-- Sección: Lo que Amo de Ti -->
+    <section class="catalog" style="padding-top: 40px;">
+        <h2 class="section-title">Lo que Amo de mi Princesa</h2>
+        <p style="text-align: center; margin-bottom: 40px; opacity: 0.9; max-width: 700px; margin-left: auto; margin-right: auto;">
+            Hay tantas cosas que amo de ella que sería imposible enumerarlas todas, pero aquí van algunas...
+        </p>
+        
+        <div class="love-categories">
+            <div class="love-item" onclick="toggleLove(this)">
+                <div class="love-header">
+                    <h3>Su Sonrisa :)</h3>
+                    <i class="fas fa-chevron-down"></i>
+                </div>
+                <div class="love-content">
+                    <p>Su sonrisa ilumina mis días más oscuros. Cuando mi chiquilla sonríe, el mundo entero desaparece y solo existe ella. Es mi lugar favorito, mi refugio, mi hogar. Ver tu sonrisa lo arregla todo.</p>
+                </div>
+            </div>
+
+            <div class="love-item" onclick="toggleLove(this)">
+                <div class="love-header">
+                    <h3>💖 Tu Forma de Ser</h3>
+                    <i class="fas fa-chevron-down"></i>
+                </div>
+                <div class="love-content">
+                    <p>Amo su autenticidad, cómo es ella misma sin pretensiones. Su bondad, su empatía, la forma en que se preocupas por los demás. Mi pechocha es genuina, real, y eso es algo que no tiene precio en este mundo.</p>
+                </div>
+            </div>
+
+            <div class="love-item" onclick="toggleLove(this)">
+                <div class="love-header">
+                    <h3>Sus Grandes Gestos</h3>
+                    <i class="fas fa-chevron-down"></i>
+                </div>
+                <div class="love-content">
+                    <p>Esos detalles que solo ella hace: la forma en que me mira, sus mensajes inesperados, cómo me abraza cuando más lo necesito. Son esos grandes gestos los que construyen nuestro gran amor.</p>
+                </div>
+            </div>
+
+            <div class="love-item" onclick="toggleLove(this)">
+                <div class="love-header">
+                    <h3>Su Apoyo Incondicional 🌟</h3>
+                    <i class="fas fa-chevron-down"></i>
+                </div>
+                <div class="love-content">
+                    <p>Mi niña siempre está ahí para mí, en las buenas y en las malas. Cree en mí incluso cuando yo dudo de mí mismo. Su apoyo me da fuerzas para seguir adelante y perseguir mis sueños.</p>
+                </div>
+            </div>
+
+            <div class="love-item" onclick="toggleLove(this)">
+                <div class="love-header">
+                    <h3>Cómo Me Hace Sentir</h3>
+                    <i class="fas fa-chevron-down"></i>
+                </div>
+                <div class="love-content">
+                    <p>Con ella me siento completo, amado, valorado. Me hace sentir que soy suficiente tal como soy. A su lado soy la mejor versión de mí mismo, y eso es un regalo que no tiene precio.</p>
+                </div>
+            </div>
+
+            <div class="love-item" onclick="toggleLove(this)">
+                <div class="love-header">
+                    <h3>Su Risa</h3>
+                    <i class="fas fa-chevron-down"></i>
+                </div>
+                <div class="love-content">
+                    <p>Su risa es mi canción favorita. Ese sonido que hace que todo valga la pena. Haría cualquier cosa por escucharla reír, porque en ese momento sé que es feliz, y su felicidad es mi felicidad.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
     <!-- Sección Final -->
     <section class="final-section">
-        <div class="quote" id="finalQuote">
+        <div class="quote">
             En todos los universos posibles, siempre te elegiría a ti, Valeria mi amor eterno, te amo con todo mi ser con cada pedacito de mí, y jamás me cansaré de desmostrártelo mi princesa hermosa.
+        </div>
+        <div class="quote">
+            No somos perfectos, pero somos reales. Y contigo, incluso los días normales se sienten especiales.
         </div>
         
         <!-- Botón Secreto de Audio -->
@@ -879,6 +1160,12 @@
             <source src="audio/carduemenes.mp3" type="audio/mpeg">
             Tu navegador no soporta el audio.
         </audio>
+
+        <!-- Firma -->
+        <div class="signature" style="margin-top: 80px !important; margin-bottom: 40px !important;">
+            <p style="font-size: 1.2rem; font-family: 'Cinzel', serif; letter-spacing: 2px;">Hecho con amor por tu turincito</p>
+            <p class="signature-date" style="font-size: 0.9rem; color: #ec4899; margin-top: 15px; letter-spacing: 1.5px;">14 de Febrero, 2026</p>
+        </div>
     </section>
 
     <!-- Modal Dinámico -->
@@ -1085,7 +1372,7 @@
             't3': {
                 title: "El día que supe que eras tú",
                 date: "Clímax de temporada",
-                desc: "Después de tanto conocernos y descubrirnos, en solo un momento de paz absoluta a tu lado donde entendí que mi hogar no era un lugar, sino una persona: tú. Me atreví a confesarte mi amor, emocionado y nervioso a la vez, anosioso te pregunté y así tu linda respuesta llegó.",
+                desc: "Después de tanto conocernos y descubrirnos, en solo un momento de paz absoluta a tu lado donde entendí que mi hogar no era un lugar, sino una persona: tú. Me atreví a confesarte mi amor, emocionado y nervioso a la vez, ansioso te pregunté y así tu linda respuesta llegó.",
                 img: "images/foto19.jpeg"
             },
             't4': {
@@ -1269,7 +1556,19 @@
             observer.observe(el);
         });
 
+        /* --- FUNCIÓN PARA EXPANDIR/CONTRAER "LO QUE AMO DE TI" --- */
+        function toggleLove(element) {
+            // Cerrar todos los demás items
+            document.querySelectorAll('.love-item').forEach(item => {
+                if (item !== element) {
+                    item.classList.remove('active');
+                }
+            });
+            
+            // Toggle del item clickeado
+            element.classList.toggle('active');
+        }
+
     </script>
 </body>
-
 </html>
